@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph"
+    app:startDestination="@id/categories">
+
+    <fragment
+        android:id="@+id/categories"
+        android:name="com.example.e_commerce.Categories"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categories_to_sub_Categories"
+            app:destination="@id/sub_Categories" />
+    </fragment>
+    <fragment
+        android:id="@+id/sub_Categories"
+        android:name="com.example.e_commerce.Sub_Categories"
+        android:label="fragment_sub__categories"
+        tools:layout="@layout/fragment_sub__categories" />
+</navigation>
