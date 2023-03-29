@@ -18,6 +18,4 @@
         android:layout_alignBottom="@+id/rvList"
         android:layout_margin="20dp"/>
 
-
-
 </RelativeLayout>

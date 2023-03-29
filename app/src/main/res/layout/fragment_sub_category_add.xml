@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SubCategoryAdd">
 
+    <!-- TODO: Update blank fragment layout -->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etName"
         android:hint="Enter your name"
+        android:textColor="@color/white"
         android:layout_margin="20dp"
+        android:background="@drawable/designing"
+        android:padding="10dp"
         />
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/iv"
         android:layout_margin="20dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@drawable/designing"
+        android:padding="10dp"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnAdd"
         android:text="ADD"
+        android:layout_margin="20dp"
         android:textSize="20sp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/designing"
+        android:padding="10dp"/>
+
 
 </LinearLayout>

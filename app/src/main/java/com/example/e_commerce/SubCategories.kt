@@ -1,20 +1,17 @@
 package com.example.e_commerce
 
-import android.icu.text.Transliterator.Position
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.e_commerce.databinding.FragmentCategoriesBinding
+import com.example.e_commerce.databinding.FragmentSubCategoriesBinding
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.security.Key
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,18 +20,18 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [Categories.newInstance] factory method to
+ * Use the [Sub_Categories.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Categories : Fragment(), NewInterface {
+class SubCategories : Fragment(), SubCategoryInterface{
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var binding: FragmentCategoriesBinding
-    var categoryList=ArrayList<CategoryModel>()
-    lateinit var categoryAdapter: CategoryAdapter
-    lateinit var newInterface: NewInterface
-    var categoryModel = CategoryModel()
+    lateinit var binding: FragmentSubCategoriesBinding
+    var subcategoryList=ArrayList<SubCategoryModel>()
+    lateinit var subcategoryAdapter: SubCategoryAdapter
+    lateinit var subCategoryInterface: SubCategoryInterface
+    var subcategoryModel = SubCategoryModel()
     val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,43 +45,46 @@ class Categories : Fragment(), NewInterface {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): RelativeLayout {
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentCategoriesBinding.inflate(layoutInflater)
-
-        categoryAdapter = CategoryAdapter(categoryList, this)
-        binding.rvList.adapter = categoryAdapter
+        binding = FragmentSubCategoriesBinding.inflate(layoutInflater)
+        subcategoryAdapter = SubCategoryAdapter(subcategoryList, this)
+        binding.rvList.adapter = subcategoryAdapter
         binding.rvList.layoutManager = LinearLayoutManager(context)
 
-        db.collection("Category").addSnapshotListener { value, error ->
+        db.collection("SubCategory").addSnapshotListener { value, error ->
             if (value != null)
                 for (snapshots in value!!.documentChanges) {
                     when (snapshots.type) {
                         DocumentChange.Type.ADDED -> {
-                            var categoryModel = CategoryModel()
-                            categoryModel = snapshots.document.toObject(categoryModel::class.java)
-                            categoryModel.key = snapshots.document.id ?: ""
-                            categoryList.add(categoryModel)
-                            categoryAdapter.notifyDataSetChanged()
+                            var subcategoryModel = SubCategoryModel()
+                            subcategoryModel =
+                                snapshots.document.toObject(subcategoryModel::class.java)
+                            subcategoryModel.key = snapshots.document.id ?: ""
+                            subcategoryList.add(subcategoryModel)
+                            subcategoryAdapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.REMOVED -> {
-                            var categoryModel = CategoryModel()
-                            categoryModel = snapshots.document.toObject(categoryModel::class.java)
-                            categoryModel.key = snapshots.document.id ?: ""
-                            for (i in 0..categoryList.size - 1) {
-                                if ((snapshots.document.id ?: "").equals(categoryList[i].key)) {
-                                    categoryList.removeAt(i)
+                            var sbcategoryModel = SubCategoryModel()
+                            subcategoryModel =
+                                snapshots.document.toObject(subcategoryModel::class.java)
+                            subcategoryModel.key = snapshots.document.id ?: ""
+                            for (i in 0..subcategoryList.size - 1) {
+                                if ((snapshots.document.id ?: "").equals(subcategoryList[i].key)) {
+                                    subcategoryList.removeAt(i)
                                     break
                                 }
+                                //categoryAdapter.notifyDataSetChanged()
                             }
-                            categoryAdapter.notifyDataSetChanged()
+                            subcategoryAdapter.notifyDataSetChanged()
                         }
                         else -> {}
                     }
                 }
         }
+
         binding.floatingBtn.setOnClickListener {
-            findNavController().navigate(R.id.addItems)
+            findNavController().navigate(R.id.subCategoryAdd)
         }
         return binding.root
     }
@@ -96,12 +96,12 @@ class Categories : Fragment(), NewInterface {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment Categories.
+         * @return A new instance of fragment Sub_Categories.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param2: String) =
-            Categories().apply {
+        fun newInstance(param1: String, param2: String) =
+            SubCategories().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -110,7 +110,6 @@ class Categories : Fragment(), NewInterface {
     }
 
     override fun edit(position: Int) {
-        findNavController().navigate(R.id.addItems, bundleOf("Category" to categoryList[position], "isUpdate" to true))
+        findNavController().navigate(R.id.subCategoryAdd, bundleOf("Category" to subcategoryList[position], "isUpdate" to true))
     }
-
 }
