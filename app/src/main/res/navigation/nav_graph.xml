@@ -13,13 +13,10 @@
         <action
             android:id="@+id/action_categories_to_addItems"
             app:destination="@id/addItems" />
-        <action
-            android:id="@+id/action_categories_to_editItems"
-            app:destination="@id/editItems" />
     </fragment>
     <fragment
         android:id="@+id/addItems"
-        android:name="com.example.e_commerce.AddItems"
+        android:name="com.example.e_commerce.UpdatesItems.AddUpdateCategoryItemsFragment"
         android:label="fragment_add_items"
         tools:layout="@layout/fragment_add_items" >
         <action
@@ -27,34 +24,12 @@
             app:destination="@id/categories" />
     </fragment>
     <fragment
-        android:id="@+id/editItems"
-        android:name="com.example.e_commerce.EditItems"
-        android:label="fragment_edit_items"
-        tools:layout="@layout/fragment_edit_items" />
+        android:id="@+id/addUpdateSubCategoryItemsFragment"
+        android:name="com.example.e_commerce.UpdatesItems.AddUpdateSubCategoryItemsFragment"
+        android:label="AddUpdateSubCategoryItemsFragment" />
     <fragment
-        android:id="@+id/subCategoryAdd"
-        android:name="com.example.e_commerce.SubCategoryAdd"
-        android:label="fragment_sub_category_add"
-        tools:layout="@layout/fragment_sub_category_add" >
-        <action
-            android:id="@+id/action_subCategoryAdd_to_subCategories"
-            app:destination="@id/subCategories" />
-    </fragment>
-    <fragment
-        android:id="@+id/subCategories"
+        android:id="@+id/subCategoriesList"
         android:name="com.example.e_commerce.SubCategories"
-        android:label="fragment_sub_categories"
-        tools:layout="@layout/fragment_sub_categories" >
-        <action
-            android:id="@+id/action_subCategories_to_subCategoryAdd"
-            app:destination="@id/subCategoryAdd" />
-        <action
-            android:id="@+id/action_subCategories_to_printedSubCategory"
-            app:destination="@id/printedSubCategory" />
-    </fragment>
-    <fragment
-        android:id="@+id/printedSubCategory"
-        android:name="com.example.e_commerce.PrintedSubCategory"
-        android:label="fragment_printed_sub_category"
-        tools:layout="@layout/fragment_printed_sub_category" />
+        android:label="SubCategoriesList" />
+
 </navigation>

@@ -1,39 +1,32 @@
-package com.example.e_commerce
+package com.example.e_commerce.UpdatesItems
 
-import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.e_commerce.CategoryInterface
+import com.example.e_commerce.R
+import com.example.e_commerce.adapters.CategoryAdapter
 import com.example.e_commerce.databinding.FragmentAddItemsBinding
+import com.example.e_commerce.models.CategoryModel
+import com.example.e_commerce.models.SubCategoryModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.firestore.DocumentChange
 import java.util.*
 import kotlin.collections.ArrayList
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
- * Use the [AddItems.newInstance] factory method to
+ * Use the [AddUpdateSubCategoryItemsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddItems : Fragment() {
+class AddUpdateSubCategoryItemsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -41,29 +34,34 @@ class AddItems : Fragment() {
     var storageRef = FirebaseStorage.getInstance()
     var categoryList = ArrayList<CategoryModel>()
     lateinit var categoryAdapter: CategoryAdapter
-    lateinit var newInterface: NewInterface
+    lateinit var newInterface: CategoryInterface
     var categoryModel = CategoryModel()
+    var subCategoriesList = SubCategoryModel()
     val db = Firebase.firestore
     var isUpdate = false
+     var imagePermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        }
+    var pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        System.out.println("in PickImage $it")
+        binding?.iv?.setImageURI(it)
+        it?.let { it1 ->
+            storageRef.getReference(Calendar.getInstance().timeInMillis.toString())
+                .putFile(it1)
+                .addOnSuccessListener { uploadTask -> }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             categoryModel = it.getSerializable("Category") as CategoryModel
-            isUpdate = it.getBoolean("isUpdate", false)
-        }
-        var imagePermission =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            }
-        var pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            System.out.println("in PickImage $it")
-            binding?.iv?.setImageURI(it)
-            it?.let { it1 ->
-                storageRef.getReference(Calendar.getInstance().timeInMillis.toString())
-                    .putFile(it1)
-                    .addOnSuccessListener { uploadTask -> }
+            if(it.containsKey("SubCategory")) {
+                subCategoriesList = it.getSerializable("SubCategory") as SubCategoryModel
+                isUpdate = it.getBoolean("isUpdate", false)
             }
         }
+
     }
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -82,11 +80,13 @@ class AddItems : Fragment() {
                 } else {
                     System.out.println(" isUpdate $isUpdate")
                     if(isUpdate == false) {
-                        val categoryModel = CategoryModel(name = binding?.etName?.text.toString())
-                        db.collection("Category")
+                        val categoryModel = SubCategoryModel(name = binding?.etName?.text.toString(), catId = categoryModel.key)
+                        db.collection("SubCategory")
                             .add(categoryModel)
                             .addOnSuccessListener {
                                 Toast.makeText(requireActivity(), "ADD", Toast.LENGTH_SHORT).show()
+                                findNavController().popBackStack()
+
                             }.addOnFailureListener {
                                 Log.e("TAG", "Failure ${it}")
                                 Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT)
@@ -95,17 +95,22 @@ class AddItems : Fragment() {
                     }
                     else{
                         categoryModel.name = binding?.etName?.text.toString()
-                        db.collection("Category").document(categoryModel.key?:"")
+                        db.collection("SubCategory").document(subCategoriesList.id?:"")
                             .set(categoryModel)
                             .addOnSuccessListener {
-                                Toast.makeText(requireActivity(), "Data updated", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Data updated",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                findNavController().popBackStack()
                             }.addOnFailureListener {
                                 Log.e("TAG", "Failure ${it}")
                                 Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT)
                                     .show()
                             }
                     }
-                    findNavController().navigate(R.id.categories)
+
                 }
             }
             binding?.btnDelete?.setOnClickListener {
@@ -126,10 +131,9 @@ class AddItems : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AddItems().apply {
+            AddUpdateSubCategoryItemsFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

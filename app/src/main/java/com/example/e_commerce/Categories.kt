@@ -1,6 +1,5 @@
 package com.example.e_commerce
 
-import android.icu.text.Transliterator.Position
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,12 +8,12 @@ import android.widget.RelativeLayout
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.e_commerce.adapters.CategoryAdapter
 import com.example.e_commerce.databinding.FragmentCategoriesBinding
+import com.example.e_commerce.models.CategoryModel
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.security.Key
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,14 +25,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Categories.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Categories : Fragment(), NewInterface {
+class Categories : Fragment(), CategoryInterface {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentCategoriesBinding
     var categoryList=ArrayList<CategoryModel>()
     lateinit var categoryAdapter: CategoryAdapter
-    lateinit var newInterface: NewInterface
+    lateinit var newInterface: CategoryInterface
     var categoryModel = CategoryModel()
     val db = Firebase.firestore
 
@@ -88,12 +87,6 @@ class Categories : Fragment(), NewInterface {
         binding.floatingBtn.setOnClickListener {
             findNavController().navigate(R.id.addItems)
         }
-        binding.plainSubCategory.setOnClickListener {
-            findNavController().navigate(R.id.subCategories)
-        }
-        binding.PrintedSubCategory.setOnClickListener {
-            findNavController().navigate(R.id.printedSubCategory)
-        }
         return binding.root
     }
 
@@ -111,14 +104,18 @@ class Categories : Fragment(), NewInterface {
         fun newInstance(param2: String) =
             Categories().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
 
     override fun edit(position: Int) {
         findNavController().navigate(R.id.addItems, bundleOf("Category" to categoryList[position], "isUpdate" to true))
+    }
+
+    override fun subCat(position: Int) {
+        findNavController().navigate(R.id.subCategoriesList, bundleOf("Category" to categoryList[position], "isUpdate" to true))
+
     }
 
 }
