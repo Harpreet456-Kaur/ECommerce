@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.databinding.LayoutItemsBinding
 
-class CategoryAdapter(val categoryList: ArrayList<CategoryModel>, val newInterface: NewInterface): RecyclerView.Adapter<CategoryAdapter.viewHolder>() {
+class PrintedAdapter(val PrintedList: ArrayList<PrintedModel>, val printedInterface: PrintedInterface): RecyclerView.Adapter<PrintedAdapter.viewHolder>() {
     inner class viewHolder(val binding: LayoutItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
@@ -15,14 +15,14 @@ class CategoryAdapter(val categoryList: ArrayList<CategoryModel>, val newInterfa
         return viewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return categoryList.size
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
+        holder.binding.tvName.text = PrintedList[position].name
+        holder.itemView.setOnClickListener {
+            printedInterface.edit(position)
+    }
     }
 
-    override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.binding.tvName.text = categoryList[position].name
-        holder.itemView.setOnClickListener {
-            newInterface.edit(position)
-        }
+    override fun getItemCount(): Int {
+        return PrintedList.size
     }
 }

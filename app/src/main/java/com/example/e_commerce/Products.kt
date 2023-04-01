@@ -22,7 +22,6 @@ class Products : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentProductsBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -30,7 +29,6 @@ class Products : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +37,6 @@ class Products : Fragment() {
         binding = FragmentProductsBinding.inflate(layoutInflater)
         return binding.root
     }
-
     companion object {
         /**
          * Use this factory method to create a new instance of

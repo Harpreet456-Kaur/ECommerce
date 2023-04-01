@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.e_commerce.databinding.FragmentSubCategoriesBinding
+import com.example.e_commerce.databinding.LayoutItemsBinding
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -28,9 +29,9 @@ class SubCategories : Fragment(), SubCategoryInterface{
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentSubCategoriesBinding
-    var subcategoryList=ArrayList<SubCategoryModel>()
+    var subCategoryList=ArrayList<SubCategoryModel>()
     lateinit var subcategoryAdapter: SubCategoryAdapter
-    lateinit var subCategoryInterface: SubCategoryInterface
+    lateinit var subcategoryInterface: SubCategoryInterface
     var subcategoryModel = SubCategoryModel()
     val db = Firebase.firestore
 
@@ -40,18 +41,6 @@ class SubCategories : Fragment(), SubCategoryInterface{
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentSubCategoriesBinding.inflate(layoutInflater)
-        subcategoryAdapter = SubCategoryAdapter(subcategoryList, this)
-        binding.rvList.adapter = subcategoryAdapter
-        binding.rvList.layoutManager = LinearLayoutManager(context)
-
         db.collection("SubCategory").addSnapshotListener { value, error ->
             if (value != null)
                 for (snapshots in value!!.documentChanges) {
@@ -61,17 +50,17 @@ class SubCategories : Fragment(), SubCategoryInterface{
                             subcategoryModel =
                                 snapshots.document.toObject(subcategoryModel::class.java)
                             subcategoryModel.key = snapshots.document.id ?: ""
-                            subcategoryList.add(subcategoryModel)
+                            subCategoryList.add(subcategoryModel)
                             subcategoryAdapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.REMOVED -> {
-                            var sbcategoryModel = SubCategoryModel()
+                            var subcategoryModel = SubCategoryModel()
                             subcategoryModel =
                                 snapshots.document.toObject(subcategoryModel::class.java)
                             subcategoryModel.key = snapshots.document.id ?: ""
-                            for (i in 0..subcategoryList.size - 1) {
-                                if ((snapshots.document.id ?: "").equals(subcategoryList[i].key)) {
-                                    subcategoryList.removeAt(i)
+                            for (i in 0..subCategoryList.size - 1) {
+                                if ((snapshots.document.id ?: "").equals(subCategoryList[i].key)) {
+                                    subCategoryList.removeAt(i)
                                     break
                                 }
                                 //categoryAdapter.notifyDataSetChanged()
@@ -82,6 +71,18 @@ class SubCategories : Fragment(), SubCategoryInterface{
                     }
                 }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentSubCategoriesBinding.inflate(layoutInflater)
+        subcategoryAdapter = SubCategoryAdapter(subCategoryList, this)
+        binding.rvList.adapter = subcategoryAdapter
+        binding.rvList.layoutManager = LinearLayoutManager(context)
+
 
         binding.floatingBtn.setOnClickListener {
             findNavController().navigate(R.id.subCategoryAdd)
@@ -110,6 +111,6 @@ class SubCategories : Fragment(), SubCategoryInterface{
     }
 
     override fun edit(position: Int) {
-        findNavController().navigate(R.id.subCategoryAdd, bundleOf("Category" to subcategoryList[position], "isUpdate" to true))
+        findNavController().navigate(R.id.subCategoryAdd, bundleOf("SubCategory" to subCategoryList[position], "isUpdate" to true))
     }
 }

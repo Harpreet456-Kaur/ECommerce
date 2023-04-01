@@ -18,15 +18,6 @@
             app:destination="@id/editItems" />
     </fragment>
     <fragment
-        android:id="@+id/sub_Categories"
-        android:name="com.example.e_commerce.Sub_Categories"
-        android:label="fragment_sub__categories"
-        tools:layout="@layout/fragment_sub__categories" >
-        <action
-            android:id="@+id/action_sub_Categories_to_subCategoryAdd"
-            app:destination="@id/subCategoryAdd" />
-    </fragment>
-    <fragment
         android:id="@+id/addItems"
         android:name="com.example.e_commerce.AddItems"
         android:label="fragment_add_items"
@@ -44,5 +35,26 @@
         android:id="@+id/subCategoryAdd"
         android:name="com.example.e_commerce.SubCategoryAdd"
         android:label="fragment_sub_category_add"
-        tools:layout="@layout/fragment_sub_category_add" />
+        tools:layout="@layout/fragment_sub_category_add" >
+        <action
+            android:id="@+id/action_subCategoryAdd_to_subCategories"
+            app:destination="@id/subCategories" />
+    </fragment>
+    <fragment
+        android:id="@+id/subCategories"
+        android:name="com.example.e_commerce.SubCategories"
+        android:label="fragment_sub_categories"
+        tools:layout="@layout/fragment_sub_categories" >
+        <action
+            android:id="@+id/action_subCategories_to_subCategoryAdd"
+            app:destination="@id/subCategoryAdd" />
+        <action
+            android:id="@+id/action_subCategories_to_printedSubCategory"
+            app:destination="@id/printedSubCategory" />
+    </fragment>
+    <fragment
+        android:id="@+id/printedSubCategory"
+        android:name="com.example.e_commerce.PrintedSubCategory"
+        android:label="fragment_printed_sub_category"
+        tools:layout="@layout/fragment_printed_sub_category" />
 </navigation>

@@ -58,17 +58,17 @@ class SubCategoryAdd : Fragment() {
                     .addOnSuccessListener { uploadTask -> }
             }
         }
-        binding.btnAdd.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireActivity(),
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                pickImage.launch("image/*")
-            } else {
-                imagePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-        }
+//        binding.btnAdd.setOnClickListener {
+//            if (ContextCompat.checkSelfPermission(
+//                    requireActivity(),
+//                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+//                ) == PackageManager.PERMISSION_GRANTED
+//            ) {
+//                pickImage.launch("image/*")
+//            } else {
+//                imagePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//            }
+//        }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,7 +82,7 @@ class SubCategoryAdd : Fragment() {
             } else {
                 if(isUpdate == false) {
                     val subcategoryModel = SubCategoryModel(name = binding.etName.text.toString())
-                    db.collection("Category")
+                    db.collection("SubCategory")
                         .add(subcategoryModel)
                         .addOnSuccessListener {
                             Toast.makeText(requireActivity(), "ADD", Toast.LENGTH_SHORT).show()
@@ -94,7 +94,7 @@ class SubCategoryAdd : Fragment() {
                 }
                 else{
                     subcategoryModel.name = binding.etName.text.toString()
-                    db.collection("Category").document(subcategoryModel.key?:"")
+                    db.collection("SubCategory").document(subcategoryModel.key?:"")
                         .set(subcategoryModel)
                         .addOnSuccessListener {
                             Toast.makeText(requireActivity(), "Data updated", Toast.LENGTH_SHORT).show()
@@ -104,12 +104,15 @@ class SubCategoryAdd : Fragment() {
                                 .show()
                         }
                 }
-                findNavController().navigate(R.id.sub_Categories)
+                //findNavController().navigate(R.id.subCategories)
             }
+        }
+        binding?.btnDelete?.setOnClickListener {
+            db.collection("SubCategory")
+                .document(subcategoryModel.key?:"").delete()
         }
         return binding.root
     }
-
     companion object {
         /**
          * Use this factory method to create a new instance of

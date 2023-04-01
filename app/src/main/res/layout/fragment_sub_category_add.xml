@@ -35,6 +35,16 @@
         android:layout_gravity="center"
         android:background="@drawable/designing"
         android:padding="10dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnDelete"
+        android:text="DELETE"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:background="@drawable/designing"
+        android:padding="10dp"/>
 
 
 </LinearLayout>

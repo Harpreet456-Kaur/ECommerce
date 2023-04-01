@@ -43,19 +43,6 @@ class Categories : Fragment(), NewInterface {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): RelativeLayout {
-        // Inflate the layout for this fragment
-        binding = FragmentCategoriesBinding.inflate(layoutInflater)
-
-        categoryAdapter = CategoryAdapter(categoryList, this)
-        binding.rvList.adapter = categoryAdapter
-        binding.rvList.layoutManager = LinearLayoutManager(context)
-
         db.collection("Category").addSnapshotListener { value, error ->
             if (value != null)
                 for (snapshots in value!!.documentChanges) {
@@ -82,9 +69,30 @@ class Categories : Fragment(), NewInterface {
                         else -> {}
                     }
                 }
+            binding.rvList.clearFocus()
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): RelativeLayout {
+        // Inflate the layout for this fragment
+        binding = FragmentCategoriesBinding.inflate(layoutInflater)
+
+        categoryAdapter = CategoryAdapter(categoryList, this)
+        binding.rvList.adapter = categoryAdapter
+        binding.rvList.layoutManager = LinearLayoutManager(context)
+
+
         binding.floatingBtn.setOnClickListener {
             findNavController().navigate(R.id.addItems)
+        }
+        binding.plainSubCategory.setOnClickListener {
+            findNavController().navigate(R.id.subCategories)
+        }
+        binding.PrintedSubCategory.setOnClickListener {
+            findNavController().navigate(R.id.printedSubCategory)
         }
         return binding.root
     }

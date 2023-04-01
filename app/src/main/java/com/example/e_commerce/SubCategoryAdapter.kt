@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce.databinding.LayoutItemsBinding
 
-class SubCategoryAdapter(val subcategoryList: ArrayList<SubCategoryModel>, val subCategoryInterface: SubCategoryInterface): RecyclerView.Adapter<SubCategoryAdapter.viewHolder>() {
+class SubCategoryAdapter(val subCategoryList: ArrayList<SubCategoryModel>, val subcategoryInterface: SubCategoryInterface): RecyclerView.Adapter<SubCategoryAdapter.viewHolder>() {
     inner class viewHolder(val binding: LayoutItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
@@ -16,13 +16,13 @@ class SubCategoryAdapter(val subcategoryList: ArrayList<SubCategoryModel>, val s
     }
 
     override fun getItemCount(): Int {
-        return subcategoryList.size
+        return subCategoryList.size
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.binding.tvName.text = subcategoryList[position].name
+        holder.binding.tvName.text = subCategoryList[position].name
         holder.itemView.setOnClickListener {
-            subCategoryInterface.edit(position)
+            subcategoryInterface.edit(position)
         }
     }
 }
