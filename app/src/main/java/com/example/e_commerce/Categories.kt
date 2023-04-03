@@ -29,15 +29,17 @@ class Categories : Fragment(), CategoryInterface {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var binding: FragmentCategoriesBinding
+     var binding: FragmentCategoriesBinding?=null
     var categoryList=ArrayList<CategoryModel>()
-    lateinit var categoryAdapter: CategoryAdapter
+    var categoryAdapter: CategoryAdapter?=null
     lateinit var newInterface: CategoryInterface
     var categoryModel = CategoryModel()
+    lateinit var mainActivity : MainActivity
     val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivity = activity as MainActivity
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -51,7 +53,7 @@ class Categories : Fragment(), CategoryInterface {
                             categoryModel = snapshots.document.toObject(categoryModel::class.java)
                             categoryModel.key = snapshots.document.id ?: ""
                             categoryList.add(categoryModel)
-                            categoryAdapter.notifyDataSetChanged()
+                            categoryAdapter?.notifyDataSetChanged()
                         }
                         DocumentChange.Type.REMOVED -> {
                             var categoryModel = CategoryModel()
@@ -63,31 +65,31 @@ class Categories : Fragment(), CategoryInterface {
                                     break
                                 }
                             }
-                            categoryAdapter.notifyDataSetChanged()
+                            categoryAdapter?.notifyDataSetChanged()
                         }
                         else -> {}
                     }
                 }
-            binding.rvList.clearFocus()
+            binding?.rvList?.clearFocus()
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): RelativeLayout {
+    ): RelativeLayout? {
         // Inflate the layout for this fragment
         binding = FragmentCategoriesBinding.inflate(layoutInflater)
 
-        categoryAdapter = CategoryAdapter(categoryList, this)
-        binding.rvList.adapter = categoryAdapter
-        binding.rvList.layoutManager = LinearLayoutManager(context)
+        categoryAdapter = CategoryAdapter(categoryList,mainActivity,this)
+        binding?.rvList?.adapter = categoryAdapter
+        binding?.rvList?.layoutManager = LinearLayoutManager(context)
 
 
-        binding.floatingBtn.setOnClickListener {
+        binding?.floatingBtn?.setOnClickListener {
             findNavController().navigate(R.id.addItems)
         }
-        return binding.root
+        return binding?.root
     }
 
     companion object {

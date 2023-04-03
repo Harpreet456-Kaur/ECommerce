@@ -57,7 +57,7 @@ class AddUpdateSubCategoryItemsFragment : Fragment() {
         arguments?.let {
             categoryModel = it.getSerializable("Category") as CategoryModel
             if(it.containsKey("SubCategory")) {
-                subCategoriesList = it.getSerializable("SubCategory") as SubCategoryModel
+//                subCategoriesList = it.getSerializable("SubCategory") as SubCategoryModel
                 isUpdate = it.getBoolean("isUpdate", false)
             }
         }

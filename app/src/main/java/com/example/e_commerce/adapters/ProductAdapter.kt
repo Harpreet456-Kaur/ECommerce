@@ -1,18 +1,18 @@
 package com.example.e_commerce.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.e_commerce.CategoryInterface
-import com.example.e_commerce.MainActivity
 import com.example.e_commerce.databinding.LayoutItemsBinding
-import com.example.e_commerce.models.CategoryModel
+import com.example.e_commerce.models.ProductModel
+import com.example.e_commerce.models.SubCategoryModel
 
-class CategoryAdapter(val categoryList: ArrayList<CategoryModel>,var mainActivity: MainActivity, val categoryInterface: CategoryInterface): RecyclerView.Adapter<CategoryAdapter.viewHolder>() {
-    inner class viewHolder(val binding: LayoutItemsBinding) :
+class ProductAdapter(val productList: ArrayList<ProductModel>, val categoryInterface: CategoryInterface): RecyclerView.Adapter<ProductAdapter.viewHolder>() {
+    inner class viewHolder (val binding: LayoutItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-    }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
         val binding = LayoutItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,21 +20,15 @@ class CategoryAdapter(val categoryList: ArrayList<CategoryModel>,var mainActivit
     }
 
     override fun getItemCount(): Int {
-        return categoryList.size
+        return productList.size
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.binding.tvName.text = categoryList[position].name
+        holder.binding.tvName.text = productList[position].name
         holder.binding.ibEdit.setOnClickListener {
             categoryInterface.edit(position)
         }
-        holder.binding.ibSubCat.setOnClickListener {
-            categoryInterface.subCat(position)
-        }
-        Glide.with(mainActivity)
-            .load(categoryList[position].image)
-            .circleCrop()
-            .into(holder.binding.iv)
+        holder.binding.ibSubCat.visibility = View.GONE
     }
 
 }

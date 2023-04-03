@@ -1,11 +1,22 @@
 package com.example.e_commerce
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.example.e_commerce.adapters.CategoryAdapter
+import com.example.e_commerce.adapters.ProductAdapter
 import com.example.e_commerce.databinding.FragmentProductsAddBinding
+import com.example.e_commerce.models.CategoryModel
+import com.example.e_commerce.models.ProductModel
+import com.example.e_commerce.models.SubCategoryModel
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,11 +33,20 @@ class ProductsAdd : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentProductsAddBinding
+    var productList = ArrayList<ProductModel>()
+    lateinit var productAdapter: ProductAdapter
+    lateinit var categoryInterface: CategoryInterface
+    var productModel = ProductModel()
+    val db = Firebase.firestore
+    var isUpdate = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            productModel = it.getSerializable("Product") as ProductModel
+            if(it.containsKey("SubCategory")) {
+                isUpdate = it.getBoolean("isUpdate", false)
+            }
         }
     }
 
@@ -36,6 +56,57 @@ class ProductsAdd : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentProductsAddBinding.inflate(layoutInflater)
+
+        binding.btnAdd.setOnClickListener {
+            if (binding.etName.text.isEmpty()) {
+                binding.etName.error = "Enter Product"
+            }
+            else if (binding.etPrice.text.isEmpty()) {
+                binding.etPrice.error = "Enter Price"
+            }
+            else if (binding.etDescription.text.isEmpty()) {
+                binding.etDescription.error = "Enter Description"
+            }
+            else {
+                System.out.println(" isUpdate $isUpdate")
+                if(isUpdate == false) {
+                    val productModel = ProductModel(name = binding.etName.text.toString(), price = binding.etPrice.text.toString(),
+                        description = binding.etDescription.text.toString(),
+                        catId = productModel.key, subCatId = productModel.key )
+                    db.collection("Product")
+                        .add(productModel)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireActivity(), "ADD", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+
+                        }.addOnFailureListener {
+                            Log.e("TAG", "Failure ${it}")
+                            Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                }
+                else{
+                    val productModel = ProductModel(name = binding.etName.text.toString(), price = binding.etPrice.text.toString(),
+                        description = binding.etDescription.text.toString(),
+                        catId = productModel.key, subCatId = productModel.key )
+                    db.collection("Product").document()
+                        .set(productModel)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                requireActivity(),
+                                "Data updated",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            findNavController().popBackStack()
+                        }.addOnFailureListener {
+                            Log.e("TAG", "Failure ${it}")
+                            Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                }
+
+            }
+        }
         return binding.root
     }
 
