@@ -4,12 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_commerce.CategoryInterface
+import com.example.e_commerce.Products
 import com.example.e_commerce.databinding.LayoutItemsBinding
 import com.example.e_commerce.models.ProductModel
-import com.example.e_commerce.models.SubCategoryModel
 
-class ProductAdapter(val productList: ArrayList<ProductModel>, val categoryInterface: CategoryInterface): RecyclerView.Adapter<ProductAdapter.viewHolder>() {
+class ProductAdapter(val productList: ArrayList<ProductModel>, val categoryInterface: Products): RecyclerView.Adapter<ProductAdapter.viewHolder>() {
     inner class viewHolder (val binding: LayoutItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         }

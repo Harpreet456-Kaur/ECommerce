@@ -79,7 +79,6 @@ class AddUpdateCategoryItemsFragment : Fragment() {
             categoryModel = it.getSerializable("Category") as CategoryModel
             isUpdate = it.getBoolean("isUpdate", false)
         }
-
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,10 +120,10 @@ class AddUpdateCategoryItemsFragment : Fragment() {
             db.collection("Category").document(categoryModel.key?:"").delete()
                 .addOnSuccessListener {
                     findNavController().popBackStack()
-//                toast
+                Toast.makeText(requireActivity(), "ADD", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
-//                    toast
+
                 }
         }
 

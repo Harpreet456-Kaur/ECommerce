@@ -31,5 +31,15 @@
         android:id="@+id/subCategoriesList"
         android:name="com.example.e_commerce.SubCategories"
         android:label="SubCategoriesList" />
+    <fragment
+        android:id="@+id/productsAdd"
+        android:name="com.example.e_commerce.UpdatesItems.ProductsAdd"
+        android:label="fragment_products_add"
+        tools:layout="@layout/fragment_products_add" />
+    <fragment
+        android:id="@+id/products"
+        android:name="com.example.e_commerce.Products"
+        android:label="fragment_products"
+        tools:layout="@layout/fragment_products" />
 
 </navigation>

@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ProductsAdd">
+    tools:context=".UpdatesItems.ProductsAdd">
 
     <!-- TODO: Update blank fragment layout -->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etName"
-        android:hint="Enter your name"
+        android:hint="Enter your Product"
         android:textColor="@color/white"
         android:layout_margin="20dp"
         android:background="@drawable/designing"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etPrice"
-        android:hint="Enter Prize"
+        android:hint="Enter Price"
         android:textColor="@color/white"
         android:layout_margin="20dp"
         android:background="@drawable/designing"
@@ -36,18 +36,6 @@
         android:layout_margin="20dp"
         android:background="@drawable/designing"
         android:padding="10dp"
-        />
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerCategory"
-        android:layout_margin="20dp"
-        />
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerSubCategory"
-        android:layout_margin="20dp"
         />
     <Button
         android:layout_width="match_parent"

@@ -26,7 +26,7 @@ class SubCategories : Fragment(), CategoryInterface {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentCategoriesBinding
-    var categoryList=ArrayList<SubCategoryModel>()
+    var subCategoryList=ArrayList<SubCategoryModel>()
     lateinit var categoryAdapter: SubCategoryAdapter
     var categoryModel = CategoryModel()
     val db = Firebase.firestore
@@ -46,16 +46,16 @@ class SubCategories : Fragment(), CategoryInterface {
                             var categoryModel = SubCategoryModel()
                             categoryModel = snapshots.document.toObject(SubCategoryModel::class.java)
                             categoryModel.id = snapshots.document.id ?: ""
-                            categoryList.add(categoryModel)
+                            subCategoryList.add(categoryModel)
                             categoryAdapter.notifyDataSetChanged()
                         }
                         DocumentChange.Type.REMOVED -> {
                             var categoryModel = SubCategoryModel()
                             categoryModel = snapshots.document.toObject(categoryModel::class.java)
                             categoryModel.id = snapshots.document.id ?: ""
-                            for (i in 0..categoryList.size - 1) {
-                                if ((snapshots.document.id ?: "").equals(categoryList[i].id)) {
-                                    categoryList.removeAt(i)
+                            for (i in 0..subCategoryList.size - 1) {
+                                if ((snapshots.document.id ?: "").equals(subCategoryList[i].id)) {
+                                    subCategoryList.removeAt(i)
                                     break
                                 }
                             }
@@ -75,7 +75,7 @@ class SubCategories : Fragment(), CategoryInterface {
         // Inflate the layout for this fragment
         binding = FragmentCategoriesBinding.inflate(layoutInflater)
 
-        categoryAdapter = SubCategoryAdapter(categoryList, this)
+        categoryAdapter = SubCategoryAdapter(subCategoryList, this)
         binding.rvList.adapter = categoryAdapter
         binding.rvList.layoutManager = LinearLayoutManager(context)
 
@@ -111,12 +111,12 @@ class SubCategories : Fragment(), CategoryInterface {
     override fun edit(position: Int) {
         findNavController().navigate(
             R.id.addUpdateSubCategoryItemsFragment,
-            bundleOf("Category" to categoryModel,"SubCategory" to categoryList, "isUpdate" to true)
+            bundleOf("Category" to categoryModel,"SubCategory" to subCategoryList, "isUpdate" to true)
         )
     }
 
     override fun subCat(position: Int) {
-
+        findNavController().navigate(R.id.products)
 
     }
 

@@ -1,15 +1,13 @@
 package com.example.e_commerce.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_commerce.CategoryInterface
+import com.example.e_commerce.SubCategories
 import com.example.e_commerce.databinding.LayoutItemsBinding
-import com.example.e_commerce.models.CategoryModel
 import com.example.e_commerce.models.SubCategoryModel
 
-class SubCategoryAdapter(val categoryList: ArrayList<SubCategoryModel>, val newInterface: CategoryInterface): RecyclerView.Adapter<SubCategoryAdapter.viewHolder>() {
+class SubCategoryAdapter(val categoryList: ArrayList<SubCategoryModel>, val subCategoryInterface: SubCategories): RecyclerView.Adapter<SubCategoryAdapter.viewHolder>() {
     inner class viewHolder(val binding: LayoutItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
@@ -26,8 +24,11 @@ class SubCategoryAdapter(val categoryList: ArrayList<SubCategoryModel>, val newI
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         holder.binding.tvName.text = categoryList[position].name
         holder.binding.ibEdit.setOnClickListener {
-            newInterface.edit(position)
+            subCategoryInterface.edit(position)
         }
-        holder.binding.ibSubCat.visibility = View.GONE
+       // holder.binding.ibSubCat.visibility = View.GONE
+        holder.binding.ibSubCat.setOnClickListener {
+            subCategoryInterface.subCat(position)
+        }
     }
 }
